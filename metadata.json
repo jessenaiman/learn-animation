@@ -1,0 +1,6 @@
+{
+  "name": "RigCraft Studio",
+  "description": "Interactive 3D modeling fundamentals and 2D vector animation & rigging academy with local .gltf, .obj, .fbx, and Lottie .json asset export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

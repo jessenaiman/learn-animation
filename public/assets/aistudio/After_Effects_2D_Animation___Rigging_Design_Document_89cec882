@@ -1,0 +1,78 @@
+﻿After Effects 2D Animation & Rigging Design Document
+Purpose: A practical reference and agent demonstration guide for 2D character preparation, cutout rigging, and mesh-based deformation in Adobe After Effects—built around the core principle of separating rigid (locked) structure from flexible (editable) motion.
+1. Template Philosophy: Rigid Core vs. Flexible Parameters
+Just like a reusable design document separates locked structural rules from editable fields, 2D rigging in After Effects separates solid structural parts (anchored torsos, locked joints, rigid guidelines) from flexible, animated areas (rotating limbs, swaying antennae, secondary follow-through). Each demonstration module below specifies:
+
+
+* Rigid / Locked (Do Not Alter): Core setup rules, hierarchy, and native After Effects tools that agents must follow instead of writing custom Python scripts.
+* Flexible / Editable (Agent Demo Parameters): Timing, pin placement, bend amplitude, and visual styling that agents can adjust when demonstrating each concept.
+2. Vector vs. Raster Asset Workflows
+Selecting the correct asset pipeline determines whether artwork retains clarity under high scaling and how deformation tools behave on the rendering stack:
+
+
+* Raster Workflow (Photoshop .psd): Pixel-based artwork ideal for painterly textures, shading, and photographic detail. Scaling a raster layer up significantly can cause pixelation (Adjust layer properties in After Effects), so prepare artwork at or above the largest display size needed in the composition (Preparing and importing still images). Save layered PSDs in RGB (or Grayscale) color mode with unlocked, uniquely named layers, and import via Composition - Retain Layer Sizes so each layer's anchor point centers on its own artwork rather than the full composition frame (Preparing and importing still images).
+* Vector Workflow (Illustrator .ai / Shape Layers): Path-based artwork that scales cleanly when Continuously Rasterize is enabled in the Timeline Switches column (Managing layers in After Effects). Note two critical caveats from Adobe's documentation:
+   1. Enabling Continuously Rasterize changes the layer render order to Masks → Transformations → Effects (Managing layers in After Effects).
+   2. Do not animate Position or Scale on a continuously rasterized layer with layer transformations while also animating it with Puppet tools; instead, precompose the vector/shape layer first and apply Puppet tools to the precomposition (Animating with Puppet tools).
+
+
+Workflow Attribute
+	Raster (.psd)
+	Vector (.ai / Shape Layers)
+	Best Use Case
+	Painterly textures, complex shading, photographic details
+	Clean graphics, flat styles, iconography, scalable characters
+	Scaling Behavior
+	Fixed pixel density; degrades and pixelates when scaled beyond source resolution
+	Resolution-independent when Continuously Rasterize is active
+	Import Setting
+	Composition - Retain Layer Sizes (RGB color mode, unlocked layers)
+	Composition - Retain Layer Sizes (convert AI groups to layers first)
+	Puppet Tool Caveat
+	Native bounding box limits mesh extent; pad canvas if mesh clips
+	Must precompose prior to Puppet pinning if transforming Position/Scale
+	3. Asset Preparation & Inpainting for Clean Joints
+Characters cannot be animated effectively as a single flat image without breaking physical realism during articulation:
+
+
+* Layer Separation: Break the character into independent layers for every movable part (e.g., torso, head, upper arm, lower arm, hand, wings, antennae). In Illustrator, use Release To Layers before importing (Preparing and importing still images).
+* Inpainting Hidden Joint Areas: When a limb rotates, it exposes the area underneath it. Artists use inpainting (AI fill or manual cloning/painting in Photoshop) to extend the torso behind the shoulder or overlap rounded joint caps on limb ends so no gaps or holes appear during rotation.
+* Alpha Channels & Clean Edges: Ensure transparent areas use clean alpha channels rather than flattened backgrounds (Preparing and importing still images).
+4. Cutout Rigs: Anchor Points & Parenting Hierarchy
+Cutout animation relies on a digital paper-puppet structure established through spatial pivots and relational chains:
+
+
+* Anchor Points First: Transformations (Rotation and Scale) occur around each layer's Anchor Point (Adjust layer properties in After Effects). Use the Pan Behind (Anchor Point) tool (Y) to place each limb's anchor point directly at its anatomical pivot (shoulder, elbow, wrist, antenna base) before setting keyframes (Adjust layer properties in After Effects).
+* Parent & Child Hierarchy: Use the Parent & Link pick whip in the Timeline panel so child layers inherit Position, Scale, and Rotation from their parent while still animating independently—for example, Hand → Lower Arm → Upper Arm → Torso (Adjust layer properties in After Effects). Use Null Object layers when you need an invisible master controller for the entire rig (Adjust layer properties in After Effects).
+5. Puppet Tools: Mesh Deformation, Rigid Pins, & Overlap Control
+After Effects' native Puppet tools deform a single layer like a flexible triangle mesh. Preventing unwanted "whole-body waving" requires precise pin selection:
+
+
+* Use Native Puppet Tools (No Python Scripts): Agents should apply the native Puppet tools directly in After Effects rather than writing external Python scripts to simulate mesh bending.
+* Pin Types in the Advanced Puppet Tool (default engine in After Effects 15.1+, Animating with Puppet tools):
+   * Puppet Position Pin Tool (Yellow): Places Deform pins that move part of the mesh and auto-keyframe Position when dragged. Use as few pins as possible so motion stays natural (Animating with Puppet tools).
+   * Puppet Starch Pin Tool (Red): Stiffens parts of the mesh so they resist distortion. Place Starch pins on the torso or rigid body core to prevent the whole character from waving when a limb or antenna moves (Animating with Puppet tools). (Note: In the Legacy engine, Starch pins use Amount and Extent controls; in the Advanced engine, Starch pins stiffen the region between pins and can be converted to Position pins, while Mesh Rotation Refinement controls overall stiffness vs. flexibility.)
+   * Puppet Overlap Pin Tool (Blue): Controls apparent depth (In Front value and Extent) when deformed parts cross over one another—for example, keeping a waving arm or antenna in front of the head (Animating with Puppet tools). Use Hold keyframes if animating In Front over time (Animating with Puppet tools).
+   * Advanced Pins (Blue-Green) & Bend Pins (Orange-Brown): Advanced pins control Position, Scale, and Rotation; Bend pins automatically follow surrounding pins while letting you animate Scale and Rotation—ideal for wagging tails, breathing chests, or swaying appendages (Animating with Puppet tools).
+6. Agent Demonstration Briefs (Local After Effects)
+Demo A — Vector vs. Raster Scaling & Precomp Test
+* Objective: Verify scaling limits and correct precomposition order for vector puppet meshes.
+* Locked Setup: Import standard .psd and .ai assets via Retain Layer Sizes.
+* Agent Parameters: Set scale to 300% on both layers. Toggle Continuously Rasterize on vector asset. Precompose vector layer prior to applying Puppet Position pins to avoid spatial transformation conflicts.
+Demo B — Inprinted Cutout Rig (Pivot & Hierarchy)
+* Objective: Construct a 3-part articulated arm with clean mechanical joints.
+* Locked Setup: Separate artwork into Torso, Upper_Limb, and Lower_Limb with extended joint caps.
+* Agent Parameters: Relocate anchor points to joint pivot centers using the Pan Behind tool (Y). Link hierarchy via pick whip: Lower_Limb → Upper_Limb → Torso. Animate Rotation keyframes across 60 frames.
+Demo C — Whole-Body Distortion Fix (Position + Starch Pins)
+* Objective: Eliminate body shear during extreme extremity movement.
+* Locked Setup: Single flat character layer with flexible appendages.
+* Agent Parameters: Apply Puppet Position Pin to hand/foot; translate pin to demonstrate unintended torso movement. Place Puppet Starch Pins along chest and spine to isolate distortion purely to the moving limb.
+Demo D — Bee Antennae Follow-Through & Overlap (No Python)
+* Objective: Demonstrate natural physics, drag, and depth layering natively.
+* Locked Setup: Character head layer with twin antennae.
+* Agent Parameters: Anchor head base with Starch pins. Apply Bend pins to antennae midpoints and Position pins to tips. Offset keyframes by 2-4 frames to simulate inertia/secondary movement. Apply Puppet Overlap pins to force designated antenna in front of head geometry during overlap phase.
+7. Review Checklist (For Next Session)
+* Did the vector layer stay sharp when scaled, and was it precomposed before Puppet pinning?
+* Do rotated cutout joints reveal any gaps or missing background (inpainting check)?
+* Does the torso stay completely stationary when limbs/antennae bend (Starch pin check)?
+* Do the bee's antennae show natural delayed sway and clean front/back layering without any Python scripts?
